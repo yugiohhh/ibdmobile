@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License. 
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+       <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+        <title>
+		IBD Mobile
+        </title>
+        <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
+		
+		
+        <link rel="stylesheet" href="my.css" />
+        <script src="cordova-1.8.1.js"></script>
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.1.0.min.js"></script>
+	
+		
+        <script src="my.js">
+        </script>
+		
+		<script src="jquery.rss.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			document.addEventListener("deviceready",onDeviceReady,false);
+
+			// once the device ready event fires, you can safely do your thing! -jm
+			function onDeviceReady()
+			{
+			//document.getElementById("welcomeMsg").innerHTML += "Cordova is ready! version=" + window.device.cordova;
+			console.log("onDeviceReady. You should see this message in Visual Studio's output window.");
+			}
+
+			$(document).ready(function() {
+				$.mobile.showPageLoadingMsg(); //show
+				var feedUrl = 'http://labs.yuproduction.com/mobileapps/ibd/yuspider_ibd.php';
+				$("#rss_feeds1").rss(feedUrl, {
+				  limit: 15,
+				  layoutTemplate: '{entries}',
+				  entryTemplate: '<li data-theme="c"><a href="#contentPage" rel="{author}" class="contentLink1" data-transition="slide" >{title}</a></li>'
+				},
+				function callback() {
+					$("#rss_feeds1").listview(); 
+					$("#rss_feeds1").listview('refresh'); 
+					$.mobile.hidePageLoadingMsg(); //hide
+				}
+				);
+				
+				
+				$(".contentLink1").live("click", function() {
+					$.mobile.showPageLoadingMsg();
+					//alert($(this).attr('rel'));
+						var urls = $(this).attr('rel');
+						//alert(urls);
+					$("#entryText").empty();
+					$("#entryText").rss('http://labs.yuproduction.com/mobileapps/ibd/yuspider_ibd.xml', {
+					  limit: 15,
+					  filterLimit: 1,
+					  filter: function(entry, tokens) {
+							return tokens.author.indexOf(urls) > -1
+					  },
+					  layoutTemplate: '{entries}',
+					  entryTemplate: '{body}'
+					},
+					function callback() {
+						$.mobile.hidePageLoadingMsg(); //hide
+					});
+				});
+				
+				$(".contentLink2").live("click", function() {
+					$.mobile.showPageLoadingMsg();
+					//alert($(this).attr('rel'));
+						var urls = $(this).attr('rel');
+						//alert (urls);
+					$("#entryText").empty();
+					$("#entryText").rss('http://labs.yuproduction.com/mobileapps/ibd/yuspider_ibd_hd.xml', {
+					  limit: 15,
+					  filterLimit: 1,
+					  filter: function(entry, tokens) {
+							return tokens.author.indexOf(urls) > -1
+					  },
+					  layoutTemplate: '{entries}',
+					  entryTemplate: '{body}'
+					},
+					function callback() {
+						$.mobile.hidePageLoadingMsg(); //hide
+					});
+				});
+				
+				$(".contentLink3").live("click", function() {
+					$.mobile.showPageLoadingMsg();
+					//alert($(this).attr('rel'));
+						var urls = $(this).attr('rel');
+						//alert (urls);
+					$("#entryText").empty();
+					$("#entryText").rss('http://labs.yuproduction.com/mobileapps/ibd/yuspider_ibd_nk.xml', {
+					  limit: 15,
+					  filterLimit: 1,
+					  filter: function(entry, tokens) {
+							return tokens.author.indexOf(urls) > -1
+					  },
+					  layoutTemplate: '{entries}',
+					  entryTemplate: '{body}'
+					},
+					function callback() {
+						$.mobile.hidePageLoadingMsg(); //hide
+					});
+				});
+				
+				
+				$(".navpage2").live("click", function() {
+					$.mobile.showPageLoadingMsg();
+					$("#rss_feeds2").empty();
+					$("#rss_feeds2").rss('http://labs.yuproduction.com/mobileapps/ibd/yuspider_ibd_hd.php', {
+					  limit: 15,
+					  layoutTemplate: '{entries}',
+					  entryTemplate: '<li data-theme="c"><a href="#contentPage" rel="{author}" class="contentLink2" data-transition="slide" >{title}</a></li>'
+					},
+					function callback() {
+						$("#rss_feeds2").listview(); 
+						$("#rss_feeds2").listview('refresh'); 
+						$.mobile.hidePageLoadingMsg(); //hide
+					}
+					);
+				});
+			
+				$(".navpage3").live("click", function() {
+					$.mobile.showPageLoadingMsg();
+					$("#rss_feeds3").empty();
+					$("#rss_feeds3").rss('http://labs.yuproduction.com/mobileapps/ibd/yuspider_ibd_nk.php', {
+					  limit: 15,
+					  layoutTemplate: '{entries}',
+					  entryTemplate: '<li data-theme="c"><a href="#contentPage" rel="{author}" class="contentLink3" data-transition="slide" >{title}</a></li>'
+					},
+					function callback() {
+						$("#rss_feeds3").listview(); 
+						$("#rss_feeds3").listview('refresh'); 
+						$.mobile.hidePageLoadingMsg(); //hide
+					}
+					);
+				});
+				
+				
+			  });
+			</script>
+    </head>
+    <body>
+        <!-- Home -->
+        <div data-role="page" id="page1">
+            <div data-theme="b" data-role="header" data-position="fixed">
+				<a data-role="button" data-transition="slide" data-theme="e" href="#about" data-icon="info" data-iconpos="left">
+                    About
+                </a>
+                <h3>
+                    IBD Mobile
+                </h3>
+            </div>
+            <div data-role="content" style="padding: 15px">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a class="navpage1" href="#page1" data-theme="" data-icon="info" data-transition="none">
+                                Thông báo
+                            </a>
+                        </li>
+                        <li>
+                            <a class="navpage2" href="#page2" data-theme="" data-icon="info" data-transition="none">
+                                Kết quả
+                            </a>
+                        </li>
+                        <li>
+                            <a class="navpage3" href="#page3" data-theme="" data-icon="info" data-transition="none">
+                                Hoạt động
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <ul data-role="listview" data-divider-theme="b" data-inset="true" id="rss_feeds1">
+                    <li data-role="list-divider" role="heading">
+                        Thông báo
+                    </li>
+                </ul>
+            </div>
+            <div data-theme="b" data-role="footer" data-position="fixed">
+                <h5>
+                    Powered by YuStark
+                </h5>
+            </div>
+        </div>
+		
+        <div data-role="page" id="page2">
+            <div data-theme="b" data-role="header" data-position="fixed">
+                <a data-role="button" data-transition="slide" data-theme="e" href="#about" data-icon="info" data-iconpos="left">
+                    About
+                </a>
+                <h3>
+                    IBD Mobile
+                </h3>
+            </div>
+            <div data-role="content" style="padding: 15px">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a class="navpage1" href="#page1" data-theme="" data-icon="info" data-transition="none">
+                                Thông báo
+                            </a>
+                        </li>
+                        <li>
+                            <a class="navpage2" href="#page2" data-theme="" data-icon="info" data-transition="none">
+                                Kết quả
+                            </a>
+                        </li>
+                        <li>
+                            <a class="navpage3" href="#page3" data-theme="" data-icon="info" data-transition="none">
+                                Hoạt động
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <ul data-role="listview" data-divider-theme="b" data-inset="true" id="rss_feeds2">
+                    <li data-role="list-divider" role="heading">
+                        Kết quả học tập
+                    </li>
+                </ul>
+            </div>
+            <div data-theme="b" data-role="footer" data-position="fixed">
+                <h5>
+                    Powered by YuStark
+                </h5>
+            </div>
+        </div>	
+
+        <div data-role="page" id="page3">
+            <div data-theme="b" data-role="header" data-position="fixed">
+                <a data-role="button" data-transition="slide" data-theme="e" href="#about" data-icon="info" data-iconpos="left">
+                    About
+                </a>
+                <h3>
+                    IBD Mobile
+                </h3>
+            </div>
+            <div data-role="content" style="padding: 15px">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a class="navpage1" href="#page1" data-theme="" data-icon="info" data-transition="none">
+                                Thông báo
+                            </a>
+                        </li>
+                        <li>
+                            <a class="navpage2" href="#page2" data-theme="" data-icon="info" data-transition="none">
+                                Kết quả
+                            </a>
+                        </li>
+                        <li>
+                            <a class="navpage3" href="#page3" data-theme="" data-icon="info" data-transition="none">
+                                Hoạt động
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <ul data-role="listview" data-divider-theme="b" data-inset="true" id="rss_feeds3">
+                    <li data-role="list-divider" role="heading">
+                        Hoạt động ngoại khóa
+                    </li>
+                </ul>
+            </div>
+            <div data-theme="b" data-role="footer" data-position="fixed">
+                <h5>
+                    Powered by YuStark
+                </h5>
+            </div>
+        </div>	
+
+
+		<div data-role="page" id="contentPage">
+			<div data-theme="b" data-role="header" data-position="fixed">
+				<a data-role="button" data-rel="back" data-transition="slide" data-theme="e" href="#mainPage" data-icon="back" data-iconpos="left">
+                    Back
+                </a>
+				<a data-role="button" data-transition="slide" data-theme="e" href="#about" data-icon="info" data-iconpos="left">
+                    About
+                </a>
+                <h3>
+                    IBD Mobile
+                </h3>
+            </div>
+
+			<div data-role="content" id="entryText" data-scroll="y">
+			</div>
+			
+			<div data-theme="b" data-role="footer" data-position="fixed">
+                <h5>
+                    Powered by YuStark
+                </h5>
+            </div>
+				
+		</div>		
+		
+		<div data-role="page" id="about">
+			<div data-theme="b" data-role="header" data-position="fixed">
+				<a data-role="button" data-rel="back" data-transition="slide" data-theme="e" href="#mainPage" data-icon="back" data-iconpos="left">
+                    Back
+                </a>
+                <h3>
+                    IBD Mobile
+                </h3>
+            </div>
+
+			<div data-role="content" data-scroll="y">
+				Powered by YuStark
+			</div>
+			
+			<div data-theme="b" data-role="footer" data-position="fixed">
+                <h5>
+                    Powered by YuStark
+                </h5>
+            </div>
+				
+		</div>	
+    </body>
+</html>
